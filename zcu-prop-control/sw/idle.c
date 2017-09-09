@@ -41,6 +41,10 @@ void idle_Init (void)
 	Xil_Out32 (ZCU_LIGHTS, Xil_In32 (ZCU_LIGHTS) & ~ZCU_DANGER_LIGHT);
 	Xil_Out32 (ZCU_LIGHTS, Xil_In32 (ZCU_LIGHTS) & ~ZCU_PURGE_LIGHT);
 
+	// turn on amber side lights
+	Xil_Out32 (ZCU_LIGHTS, Xil_In32 (ZCU_LIGHTS) | ZCU_RIGHT_LIGHT);
+	Xil_Out32 (ZCU_LIGHTS, Xil_In32 (ZCU_LIGHTS) | ZCU_LEFT_LIGHT);
+
 	// set first two bar graphs to no decode mode, rest to decode digits mode
 	bargraph_NoDecodeDigits (0);
 	bargraph_NoDecodeDigits (1);

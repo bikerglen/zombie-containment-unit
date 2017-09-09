@@ -82,6 +82,10 @@ void roll_Init (void)
 	Xil_Out32 (ZCU_LIGHTS, Xil_In32 (ZCU_LIGHTS) & ~ZCU_DANGER_LIGHT);
 	Xil_Out32 (ZCU_LIGHTS, Xil_In32 (ZCU_LIGHTS) & ~ZCU_PURGE_LIGHT);
 
+	// turn on amber side lights
+	Xil_Out32 (ZCU_LIGHTS, Xil_In32 (ZCU_LIGHTS) | ZCU_RIGHT_LIGHT);
+	Xil_Out32 (ZCU_LIGHTS, Xil_In32 (ZCU_LIGHTS) | ZCU_LEFT_LIGHT);
+
 	// all bar graph displays to decode digits except for squiggle which has no digits
 	bargraph_DecodeDigits (0);
 	bargraph_NoDecodeDigits (1);

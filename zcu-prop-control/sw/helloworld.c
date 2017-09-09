@@ -90,7 +90,6 @@ int main()
 {
 	int ch;
 	int state = STATE_NONE;
-	int i;
 
     init_platform();
 

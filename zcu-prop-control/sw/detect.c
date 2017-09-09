@@ -99,7 +99,7 @@ void detect_TickTasks (void)
 	if (lampTimer >= 25) {
 		lampTimer = 0;
 		lampState = (lampState + 1) & 0x1;
-		Xil_Out32 (ZCU_LIGHTS, (Xil_In32 (ZCU_LIGHTS) & ~0x30) | (lampState ? 0x30 : 0x00));
+		Xil_Out32 (ZCU_LIGHTS, (Xil_In32 (ZCU_LIGHTS) & ~0xF0) | (lampState ? 0xF0 : 0x00));
 	}
 }
 

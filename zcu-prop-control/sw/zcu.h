@@ -40,5 +40,7 @@ enum ZcuClusterPilotLightColors {
 
 #define ZCU_DANGER_LIGHT 0x10
 #define ZCU_PURGE_LIGHT 0x20
+#define ZCU_RIGHT_LIGHT 0x40
+#define ZCU_LEFT_LIGHT 0x80
 
 #endif /* SRC_ZCU_H_ */
