@@ -19,6 +19,8 @@
 #include "fieldbg.h"
 #include "levelbg.h"
 #include "zcu.h"
+#include "dmx.h"
+#include "sine.h"
 
 static void roll_SetClusterLightToAmber (void);
 static void roll_BlinkDangerLight (void);
@@ -60,6 +62,7 @@ static int activityGraphTimer;
 static int activityGraphState;
 static int activityGraphCounter;
 static int activityGraphActivity;
+static int redAlert;
 
 
 void roll_Init (void)
@@ -113,6 +116,8 @@ void roll_Init (void)
 	leftcf_Tick ();
 	rightcf_SetUserTarget (4.1);
 	rightcf_Tick ();
+
+	redAlert = 0;
 }
 
 
@@ -148,6 +153,12 @@ void roll_QuickTasks (void)
 		if (key == '#') {
 			activityGraphState = 1;
 			activityGraphTimer = 100;
+		}
+
+		if (key == '4') {
+			redAlert = 1;
+		} else if (key == '8') {
+			redAlert = 0;
 		}
 	}
 
@@ -243,6 +254,22 @@ void roll_TickTasks (void)
 		purgeLightBlinkState = 1; // to cause immediate turn on once blink is enabled
 		Xil_Out32 (ZCU_LIGHTS, Xil_In32 (ZCU_LIGHTS) & ~ZCU_PURGE_LIGHT);
 	}
+
+	// update dmx levels
+	sine_Tick ();
+	if (redAlert) {
+		for (int i = 0; i < DMX_UNI_0_NUM_CHANS; i++) {
+			dmx0_tx_buffer[i] = 0;
+		}
+		dmx0_tx_buffer[0] = 0xff;
+		dmx0_tx_buffer[3] = 0xff;
+		dmx0_tx_buffer[6] = 0xff;
+	} else {
+		sine_MapToDmx ();
+	}
+
+	// transmit dmx levels
+	dmx_Transmit ();
 }
 
 

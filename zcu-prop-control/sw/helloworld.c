@@ -56,6 +56,8 @@
 #include "sleep.h"
 
 #include "zcu.h"
+#include "dmx.h"
+#include "sine.h"
 #include "bargraph.h"
 #include "levelbg.h"
 #include "fieldbg.h"
@@ -124,6 +126,8 @@ int main()
 	levelGraph_Init (0.125, 0.125);
 	leftcf_Init ();
 	rightcf_Init ();
+	sine_Init ();
+	dmx_Init ();
 
 	while (1) {
 

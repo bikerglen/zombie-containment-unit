@@ -14,6 +14,8 @@
 #include "xil_io.h"
 
 #include "zcu.h"
+#include "dmx.h"
+#include "sine.h"
 #include "bargraph.h"
 #include "detect.h"
 
@@ -101,6 +103,13 @@ void detect_TickTasks (void)
 		lampState = (lampState + 1) & 0x1;
 		Xil_Out32 (ZCU_LIGHTS, (Xil_In32 (ZCU_LIGHTS) & ~0xF0) | (lampState ? 0xF0 : 0x00));
 	}
+
+	// update dmx levels
+	sine_Tick ();
+	sine_MapToDmx ();
+
+	// transmit dmx levels
+	dmx_Transmit ();
 }
 
 

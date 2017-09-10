@@ -15,6 +15,8 @@
 #include "xil_io.h"
 
 #include "zcu.h"
+#include "dmx.h"
+#include "sine.h"
 #include "bargraph.h"
 #include "levelbg.h"
 #include "fieldbg.h"
@@ -112,4 +114,11 @@ void idle_TickTasks (void)
 	// low oscillating levels on the two containment field bar graphs and numeric displays
 	leftcf_Tick ();
 	rightcf_Tick ();
+
+	// update dmx levels
+	sine_Tick ();
+	sine_MapToDmx ();
+
+	// transmit dmx levels
+	dmx_Transmit ();
 }
