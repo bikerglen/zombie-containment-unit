@@ -29,6 +29,10 @@ static void roll_Depressurize (void);
 static void roll_BlinkPurgeLight (void);
 static void roll_IncreaseActivity (void);
 
+// one tick is 1/50 second and channel numbering is zero base (e.g. 52 below == dmx channel 53)
+#define FOG_RUN_TICKS   200
+#define FOG_DMX_CHANNEL  52
+
 #define NUM_CUES 14
 
 Cue cues[] = {
@@ -63,6 +67,8 @@ static int activityGraphState;
 static int activityGraphCounter;
 static int activityGraphActivity;
 static int redAlert;
+static int fogStart;
+static int fogTimer;
 
 
 void roll_Init (void)
@@ -117,7 +123,15 @@ void roll_Init (void)
 	rightcf_SetUserTarget (4.1);
 	rightcf_Tick ();
 
+	// clear any left-over levels in dmx buffer
+	dmx_ClearBuffer ();
+
+	// redAlert is used to blink DMX lights red when red beacon lights are illuminated
 	redAlert = 0;
+
+	// start fog machine when screen is 'shattered' then run until timer expires
+	fogStart = 0;
+	fogTimer = 0;
 }
 
 
@@ -140,9 +154,12 @@ void roll_QuickTasks (void)
 			rightcf_Bump ();
 		}
 
+		// glass breaks on DTMF key 3
+		// only trigger on first press in this state; ignore second press
 		if (key == '3') {
 			leftcf_SetUserTarget (14.5);
 			rightcf_SetUserTarget (14.5);
+			fogStart = 1;
 		}
 
 		if (key == '9') {
@@ -266,6 +283,24 @@ void roll_TickTasks (void)
 		dmx0_tx_buffer[6] = 0xff;
 	} else {
 		sine_MapToDmx ();
+	}
+
+	// check if fogger needs to be started
+	if (fogStart == 1) {
+		fogStart = 0;
+		fogTimer = FOG_RUN_TICKS;
+		xil_printf ("FOG ON\n\r");
+	}
+
+	// run dmx fogger and fogger timer
+	if (fogTimer != 0) {
+		fogTimer--;
+		dmx0_tx_buffer[FOG_DMX_CHANNEL] = 0xff;
+		if (fogTimer == 0) {
+			xil_printf ("FOG OFF\n\r");
+		}
+	} else {
+		dmx0_tx_buffer[FOG_DMX_CHANNEL] = 0x00;
 	}
 
 	// transmit dmx levels

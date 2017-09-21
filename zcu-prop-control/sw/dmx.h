@@ -13,6 +13,7 @@
 extern uint8_t dmx0_tx_buffer[DMX_UNI_0_NUM_CHANS];
 
 void dmx_Init (void);
+void dmx_ClearBuffer (void);
 void dmx_Transmit (void);
 
 #endif /* SRC_DMX_H_ */

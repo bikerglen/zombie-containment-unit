@@ -59,6 +59,9 @@ void detect_Init (void)
 	// init blink danger and purge lights
 	lampTimer = 0;
 	lampState = 0;
+
+	// clear any left-over levels in dmx buffer
+	dmx_ClearBuffer ();
 }
 
 

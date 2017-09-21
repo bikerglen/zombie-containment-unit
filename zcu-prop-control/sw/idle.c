@@ -70,6 +70,9 @@ void idle_Init (void)
 	leftcf_Tick ();
 	rightcf_SetUserTarget (4.1);
 	rightcf_Tick ();
+
+	// clear any left-over levels in dmx buffer
+	dmx_ClearBuffer ();
 }
 
 

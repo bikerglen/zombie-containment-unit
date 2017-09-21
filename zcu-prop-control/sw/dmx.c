@@ -19,13 +19,16 @@ uint8_t dmx0_tx_buffer[DMX_UNI_0_NUM_CHANS];
 
 void dmx_Init (void)
 {
-	int i;
-
-	for (i = 0; i < DMX_UNI_0_NUM_CHANS; i++) {
-		dmx0_tx_buffer[i] = 0xff;
-	}
-
+	dmx_ClearBuffer ();
 	dmx_Transmit ();
+}
+
+
+void dmx_ClearBuffer (void)
+{
+	for (int i = 0; i < DMX_UNI_0_NUM_CHANS; i++) {
+		dmx0_tx_buffer[i] = 0x00;
+	}
 }
 
 
