@@ -442,19 +442,6 @@ begin
 end
 
 
-//----------------------------------------
-// ILA debug module
-//----------------------------------------
-
-ila_0 ila_0
-(
-	.clk			(mclk),
-	.probe0			(dtmf_in),
-	.probe1			(dtmf_in_valid),
-	.probe2			(dtmf_valid),
-	.probe3			(dtmf_data)
-);
-
 // User logic ends
 
 endmodule
