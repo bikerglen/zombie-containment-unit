@@ -296,11 +296,29 @@ void roll_TickTasks (void)
 	if (fogTimer != 0) {
 		fogTimer--;
 		dmx0_tx_buffer[FOG_DMX_CHANNEL] = 0xff;
+		// green vent lights on
+		dmx0_tx_buffer[53] = 0x00;
+		dmx0_tx_buffer[54] = 0xff;
+		dmx0_tx_buffer[55] = 0x00;
+		dmx0_tx_buffer[56] = 0x00;
+		dmx0_tx_buffer[57] = 0x00;
+		dmx0_tx_buffer[58] = 0xff;
+		dmx0_tx_buffer[59] = 0x00;
+		dmx0_tx_buffer[60] = 0x00;
 		if (fogTimer == 0) {
 			xil_printf ("FOG OFF\n\r");
 		}
 	} else {
 		dmx0_tx_buffer[FOG_DMX_CHANNEL] = 0x00;
+		// green vent lights off
+		dmx0_tx_buffer[53] = 0x00;
+		dmx0_tx_buffer[54] = 0x00;
+		dmx0_tx_buffer[55] = 0x00;
+		dmx0_tx_buffer[56] = 0x00;
+		dmx0_tx_buffer[57] = 0x00;
+		dmx0_tx_buffer[58] = 0x00;
+		dmx0_tx_buffer[59] = 0x00;
+		dmx0_tx_buffer[60] = 0x00;
 	}
 
 	// transmit dmx levels
